@@ -2,7 +2,7 @@
 
 abstract class Connection
 {
-    // protected $continue = true;
+    protected $continue = true;
 
     // abstract public function listen();
 
@@ -10,36 +10,38 @@ abstract class Connection
     {
         declare(ticks = 1);
 
-        pcntl_signal(SIGTERM, "signal_handler");
-        pcntl_signal(SIGINT, "signal_handler");
+        pcntl_signal(SIGTERM, array($this, 'stop'));
+        pcntl_signal(SIGINT, array($this, 'stop'));
     }
 
-    // protected function exit()
-    // {
-    //     $this->continue = false;
-    // }
+    public function stop()
+    {
+        $this->debug("Stopping");
+        $this->continue = false;
+        $this->debug("Stopped");
+    }
 
-    // protected function continue()
-    // {
-    //     return $this->continue;
-    // }
+    protected function cont()
+    {
+        return $this->continue;
+    }
 
-    // protected function display($i)
-    // {
-    //     echo "$i\n";
-    // }
+    protected function display($i)
+    {
+        echo "$i\n";
+    }
 
-    // protected function debug($m)
-    // {
-    //     echo "$m\n";
-    // }
+    protected function debug($m)
+    {
+        echo "$m\n";
+    }
 
 
-    // protected function socketError($m)
-    // {
-    //     $errorcode = socket_last_error();
-    //     $errormsg = socket_strerror($errorcode);
+    protected function socketError($m)
+    {
+        $errorcode = socket_last_error();
+        $errormsg = socket_strerror($errorcode);
 
-    //     throw new RunTimeException("$m : [$errorcode] $errormsg");
-    // }
+        throw new RunTimeException("$m : [$errorcode] $errormsg");
+    }
 }

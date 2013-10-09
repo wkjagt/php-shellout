@@ -11,7 +11,7 @@ class INETConnection extends Connection
 
     protected $sock;
 
-    protected $client_socks = array();
+    protected $clientSocks = array();
      
     protected $read = array();
 
@@ -43,79 +43,78 @@ class INETConnection extends Connection
 
     public function listen()
     {
-        while ($this->continue()) 
+        $this->createSocket();
+
+        while ($this->cont()) 
         {
-            //prepare array of readable client sockets
-            $read = array();
-             
-            //first socket is the master socket
-            $read[0] = $sock;
-             
-            //now add the existing client sockets
-            for ($i = 0; $i < $max_clients; $i++)
-            {
-                if($client_socks[$i] != null)
-                {
-                    $read[$i+1] = $client_socks[$i];
-                }
+            $this->setReadSockets();
+            $this->waitForSocket();
+            $this->accept();
+            $this->receive();
+        }
+
+    }
+
+    protected function waitForSocket()
+    {
+        if(socket_select($this->read , $write , $except , null) === false){
+            $this->socketError('Could not listen on socket');
+        }
+    }
+
+    protected function setReadSockets()
+    {
+        $this->read = array();
+
+        //first socket is the master socket
+        $this->read[0] = $this->sock;
+         
+        //now add the existing client sockets
+        for ($i = 0; $i < $this->maxClients; $i++) {
+            if(@$this->clientSocks[$i] != null) {
+                $this->read[$i+1] = $this->clientSocks[$i];
             }
-             
-            //now call select - blocking call
-            if(socket_select($read , $write , $except , null) === false)
-            {
-                $errorcode = socket_last_error();
-                $errormsg = socket_strerror($errorcode);
-             
-                die("Could not listen on socket : [$errorcode] $errormsg \n");
-            }
-             
-            //if ready contains the master socket, then a new connection has come in
-            if (in_array($sock, $read)) 
-            {
-                for ($i = 0; $i < $max_clients; $i++)
-                {
-                    if ($client_socks[$i] == null) 
-                    {
-                        $client_socks[$i] = socket_accept($sock);
-                         
-                        //display information about the client who is connected
-                        if(socket_getpeername($client_socks[$i], $address, $port))
-                        {
-                            echo "Client $address : $port is now connected to us. \n";
-                        }
-                         
-                        //Send Welcome message to client
-                        $message = "Welcome to php socket server version 1.0 \n";
-                        $message .= "Enter a message and press enter, and i shall reply back \n";
-                        socket_write($client_socks[$i] , $message);
-                        break;
+        }
+    }
+
+    protected function accept()
+    {
+        if (in_array($this->sock, $this->read)) {
+            for ($i = 0; $i < $this->maxClients; $i++) {
+                if (@$this->clientSocks[$i] == null)  {
+                    $this->clientSocks[$i] = socket_accept($this->sock);
+                     
+                    //display information about the client who is connected
+                    if(socket_getpeername($this->clientSocks[$i], $address, $port)) {
+                        $this->debug("Client $address : $port is now connected to us.");
                     }
+
+                    //Send Welcome message to client
+                    $message = "Welcome to php socket server version 1.0 \n";
+                    $message .= "Enter a message and press enter, and i shall reply back \n";
+                    socket_write($this->clientSocks[$i] , $message);
+                    break;
+
                 }
             }
-         
-            //check each client if they send any data
-            for ($i = 0; $i < $max_clients; $i++)
-            {
-                if (in_array($client_socks[$i] , $read))
-                {
-                    $input = socket_read($client_socks[$i] , 1024);
-                     
-                    if ($input == null) 
-                    {
-                        //zero length string meaning disconnected, remove and close the socket
-                        unset($client_socks[$i]);
-                        socket_close($client_socks[$i]);
-                    }
-         
-                    $n = trim($input);
-         
-                    $output = "OK ... $input";
-                     
-                    echo "Sending output to client \n";
-                     
-                    //send response to client
-                    socket_write($client_socks[$i] , $output);
+        }
+
+    }
+
+    protected function receive()
+    {
+        //check each client if they sent any data
+        for ($i = 0; $i < $this->maxClients; $i++) {
+            if (in_array(@$this->clientSocks[$i] , $this->read)) {
+                $input = socket_read($this->clientSocks[$i] , 1024);
+                 
+                if ($input == null) {
+                    //zero length string meaning disconnected, remove and close the socket
+                    socket_close($this->clientSocks[$i]);
+                    unset($this->clientSocks[$i]);
                 }
+                $n = trim($input);
+                $this->debug($n);
             }
         }
 
