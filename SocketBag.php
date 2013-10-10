@@ -19,7 +19,7 @@ class SocketBag
     protected function setRead()
     {
         $this->read = array();
-        $this->read[] = $this->masterSocket->getRawSocket();
+        $this->read[] = $this->masterSocket;
         
         $this->read = array_merge($this->read, $this->clients);
         return $this;
@@ -27,27 +27,37 @@ class SocketBag
 
     protected function select()
     {
-        if(socket_select($this->read, $write = NULL, $except = NULL, $tv_sec = 5) < 1) {
-            return true;
-        }        
-        return false;
+        $read = array();
+
+        foreach($this->read as $socket) {
+            $read[] = $socket->getRawSocket();
+        }
+        $selected = socket_select($read, $write = NULL, $except = NULL, $tv_sec = 5);
+
+        // remove from $this->read if not $read
+        foreach($this->read as $k => $r) {
+            if(false === in_array($r->getRawSocket(), $read)) {
+                unset($this->read[$k]);
+            }
+        }
+        return $selected < 1;
     }
 
     protected function accept()
     {
-        if (in_array($this->masterSocket->getRawSocket(), $this->read)) {        
-            $this->clients[] = SocketFactory::create($this->masterSocket)->getRawSocket();
+        if (in_array($this->masterSocket, $this->read)) {
+            $this->clients[] = SocketFactory::create($this->masterSocket);
         }
     }
 
     protected function read()
     {
-        foreach ($this->clients as $key => $client) { // for each client        
+        foreach ($this->clients as $client) {
             if (in_array($client, $this->read)) {
-                if (false === ($buf = socket_read($client, 2048, PHP_NORMAL_READ))) {
+                if (false === ($buf = socket_read($client->getRawSocket(), 2048, PHP_NORMAL_READ))) {
                     throw new SocketException();
                 }
-                echo "$buf\n";
+                echo $buf;
             }            
         }        
     }
@@ -64,6 +74,6 @@ class SocketBag
 
     public function __destruct()
     {
-        socket_close($this->masterSocket->close());        
+        $this->masterSocket->close();
     }
 }

@@ -11,6 +11,7 @@ class SocketFactory
             if (($msgsock = socket_accept($arg->getRawSocket())) === false) {
                 throw new SocketException();
             }
+
             return new ClientSocket($msgsock);
         }
 
