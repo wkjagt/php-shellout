@@ -1,9 +1,7 @@
 <?php
 
-class MasterSocket
+class MasterSocket extends Socket
 {
-    protected $socket;
-
     protected $options = array();
 
     public function __construct(array $options)
@@ -14,11 +12,6 @@ class MasterSocket
             throw new SocketException();
         }
         $this->options = $options;
-    }
-
-    public static function create(array $options)
-    {
-        return new static($options);
     }
 
     public function bind()
@@ -38,20 +31,4 @@ class MasterSocket
         }
         return $this;
     }
-
-    public function getRawSocket()
-    {
-        return $this->socket;
-    }
-
-    public function read()
-    {
-        return socket_read($this->socket , 1024);
-    }
-
-    public function close()
-    {
-        socket_close($this->socket);
-    }
-
 }

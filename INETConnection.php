@@ -1,5 +1,6 @@
 <?php
 require 'Connection.php';
+require 'Socket.php';
 require 'MasterSocket.php';
 require 'ClientSocket.php';
 require 'SocketBag.php';
