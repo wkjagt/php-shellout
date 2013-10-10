@@ -16,13 +16,17 @@ class SocketBag
         $this->size = $size;
     }
 
-    protected function setRead()
+    public function start()
     {
-        $this->read = array();
-        $this->read[] = $this->masterSocket;
-        
-        $this->read = array_merge($this->read, $this->clients);
-        return $this;
+        do {
+            $this->read = array_merge(array($this->masterSocket), $this->clients);
+
+            if($this->select() < 1) {
+                continue;                
+            }
+            
+            $this->accept()->read();
+        } while (true);
     }
 
     protected function select()
@@ -40,7 +44,7 @@ class SocketBag
                 unset($this->read[$k]);
             }
         }
-        return $selected < 1;
+        return $selected;
     }
 
     protected function accept()
@@ -48,28 +52,17 @@ class SocketBag
         if (in_array($this->masterSocket, $this->read)) {
             $this->clients[] = SocketFactory::create($this->masterSocket);
         }
+        return $this;
     }
 
     protected function read()
     {
         foreach ($this->clients as $client) {
             if (in_array($client, $this->read)) {
-                if (false === ($buf = socket_read($client->getRawSocket(), 2048, PHP_NORMAL_READ))) {
-                    throw new SocketException();
-                }
+                $buf = $client->read();
                 echo $buf;
             }            
         }        
-    }
-
-    public function start()
-    {
-        do {
-            $this->setRead();
-            if($this->select()) continue;
-            $this->accept();
-            $this->read();
-        } while (true);
     }
 
     public function __destruct()
