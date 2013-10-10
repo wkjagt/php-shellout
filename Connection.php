@@ -1,5 +1,6 @@
 <?php
 
+
 abstract class Connection
 {
     protected $continue = true;
@@ -12,6 +13,9 @@ abstract class Connection
 
         pcntl_signal(SIGTERM, array($this, 'stop'));
         pcntl_signal(SIGINT, array($this, 'stop'));
+        pcntl_signal(SIGHUP, array($this, 'stop'));
+        
+        pcntl_signal(SIGCHLD, SIG_IGN);
     }
 
     public function stop()
@@ -36,12 +40,4 @@ abstract class Connection
         echo "$m\n";
     }
 
-
-    protected function socketError($m)
-    {
-        $errorcode = socket_last_error();
-        $errormsg = socket_strerror($errorcode);
-
-        throw new RunTimeException("$m : [$errorcode] $errormsg");
-    }
 }

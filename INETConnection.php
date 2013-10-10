@@ -1,5 +1,10 @@
 <?php
 require 'Connection.php';
+require 'MasterSocket.php';
+require 'ClientSocket.php';
+require 'SocketBag.php';
+require 'SocketException.php';
+require 'SocketFactory.php';
 
 class INETConnection extends Connection
 {
@@ -9,12 +14,8 @@ class INETConnection extends Connection
 
     protected $maxClients = 10;
 
-    protected $sock;
-
-    protected $clientSocks = array();
+    protected $clients = array();
      
-    protected $read = array();
-
     public function __construct($address, $port)
     {
         parent::__construct();
@@ -23,103 +24,93 @@ class INETConnection extends Connection
         $this->port = $port;
     }
 
-    protected function createSocket()
+    protected function setup()
     {
-        if(!$this->sock = socket_create(AF_INET, SOCK_STREAM, 0)) {
-            $this->socketError("Couldn't create socket");
-        }
-        $this->debug("Socket created");
+        $socketOptions = array(
+            'domain' => AF_INET,
+            'type' => SOCK_STREAM,
+            'protocol' => SOL_TCP,
+            'address' => $this->address,
+            'port' => $this->port,
+            'backlog' => $this->maxClients
+        );
 
-        if(!socket_bind($this->sock, $this->address, $this->port)) {
-            $this->socketError("Could not bind socket");
-        }
-        $this->debug("Socket bind OK");
+        $this->masterSocket = SocketFactory::create($socketOptions)->bind()->listen();
 
-        if(!socket_listen ($this->sock , $this->maxClients)) {
-            $this->socketError("Could not listen on socket");
-        }
-        $this->debug("Socket listen OK");
+        $this->clients = new SocketBag($this->masterSocket, $this->maxClients);
     }
 
     public function listen()
     {
-        $this->createSocket();
+        $this->setup();
+        $this->clients->start();
 
-        while ($this->cont()) 
-        {
-            $this->setReadSockets();
-            $this->waitForSocket();
-            $this->accept();
-            $this->receive();
-        }
 
+
+        // $sock = $this->masterSocket->getRawSocket();
+
+        // //clients array
+        // $clients = array();
+
+        // do {
+        //     $read = array();
+        //     $read[] = $sock;
+            
+        //     $read = array_merge($read,$clients);
+            
+        //     // Set up a blocking call to socket_select
+        //     if(socket_select($read, $write = NULL, $except = NULL, $tv_sec = 5) < 1)
+        //     {
+        //         //    SocketServer::debug("Problem blocking socket_select?");
+        //         continue;
+        //     }
+            
+        //     // Handle new Connections
+        //     if (in_array($sock, $read)) {        
+                
+        //         if (($msgsock = socket_accept($sock)) === false) {
+        //             echo "socket_accept() falló: razón: " . socket_strerror(socket_last_error($sock)) . "\n";
+        //             break;
+        //         }
+        //         $clients[] = $msgsock;
+        //         $key = array_keys($clients, $msgsock);
+        //         /* Enviar instrucciones. */
+        //         $msg = "\nBienvenido al Servidor De Prueba de PHP. \n" .
+        //         "Usted es el cliente numero: {$key[0]}\n" .
+        //         "Para salir, escriba 'quit'. Para cerrar el servidor escriba 'shutdown'.\n";
+        //         socket_write($msgsock, $msg, strlen($msg));
+                
+        //     }
+            
+        //     // Handle Input
+        //     foreach ($clients as $key => $client) { // for each client        
+        //         if (in_array($client, $read)) {
+        //             if (false === ($buf = socket_read($client, 2048, PHP_NORMAL_READ))) {
+        //                 echo "socket_read() falló: razón: " . socket_strerror(socket_last_error($client)) . "\n";
+        //                 break 2;
+        //             }
+        //             if (!$buf = trim($buf)) {
+        //                 continue;
+        //             }
+        //             if ($buf == 'quit') {
+        //                 unset($clients[$key]);
+        //                 socket_close($client);
+        //                 break;
+        //             }
+        //             if ($buf == 'shutdown') {
+        //                 socket_close($client);
+        //                 break 2;
+        //             }
+        //             $talkback = "Cliente {$key}: Usted dijo '$buf'.\n";
+        //             socket_write($client, $talkback, strlen($talkback));
+        //             echo "$buf\n";
+        //         }
+                
+        //     }        
+        // } while (true);
+
+        // socket_close($sock);
     }
-
-    protected function waitForSocket()
-    {
-        if(socket_select($this->read , $write , $except , null) === false){
-            $this->socketError('Could not listen on socket');
-        }
-    }
-
-    protected function setReadSockets()
-    {
-        $this->read = array();
-
-        //first socket is the master socket
-        $this->read[0] = $this->sock;
-         
-        //now add the existing client sockets
-        for ($i = 0; $i < $this->maxClients; $i++) {
-            if(@$this->clientSocks[$i] != null) {
-                $this->read[$i+1] = $this->clientSocks[$i];
-            }
-        }
-    }
-
-    protected function accept()
-    {
-        if (in_array($this->sock, $this->read)) {
-            for ($i = 0; $i < $this->maxClients; $i++) {
-                if (@$this->clientSocks[$i] == null)  {
-                    $this->clientSocks[$i] = socket_accept($this->sock);
-                     
-                    //display information about the client who is connected
-                    if(socket_getpeername($this->clientSocks[$i], $address, $port)) {
-                        $this->debug("Client $address : $port is now connected to us.");
-                    }
-
-                    //Send Welcome message to client
-                    $message = "Welcome to php socket server version 1.0 \n";
-                    $message .= "Enter a message and press enter, and i shall reply back \n";
-                    socket_write($this->clientSocks[$i] , $message);
-                    break;
-
-                }
-            }
-        }
-
-    }
-
-    protected function receive()
-    {
-        //check each client if they sent any data
-        for ($i = 0; $i < $this->maxClients; $i++) {
-            if (in_array(@$this->clientSocks[$i] , $this->read)) {
-                $input = socket_read($this->clientSocks[$i] , 1024);
-                 
-                if ($input == null) {
-                    //zero length string meaning disconnected, remove and close the socket
-                    socket_close($this->clientSocks[$i]);
-                    unset($this->clientSocks[$i]);
-                }
-                $n = trim($input);
-                $this->debug($n);
-            }
-        }
-
-    }
-
 }
 
 
