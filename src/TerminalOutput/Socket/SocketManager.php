@@ -12,10 +12,13 @@ class SocketManager
 
     protected $size;
 
-    public function __construct(MasterSocket $masterSocket, $size)
+    protected $commands;
+
+    public function __construct(MasterSocket $masterSocket, $size, $commands)
     {
         $this->masterSocket = $masterSocket;
         $this->size = $size;
+        $this->commands = $commands;
     }
 
     public function start()
@@ -28,7 +31,7 @@ class SocketManager
             }
             
             $this->accept()->read();
-        } while (true);
+        } while ($this->commands->continue);
     }
 
     protected function select()

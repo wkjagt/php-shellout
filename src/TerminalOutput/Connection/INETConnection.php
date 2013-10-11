@@ -34,7 +34,7 @@ class INETConnection extends Connection
 
         $this->masterSocket = SocketFactory::create($socketOptions)->bind()->listen();
 
-        $this->clients = new SocketManager($this->masterSocket, $this->maxClients);
+        $this->clients = new SocketManager($this->masterSocket, $this->maxClients, $this->commands);
     }
 
     public function listen()

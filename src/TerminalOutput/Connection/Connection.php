@@ -4,12 +4,16 @@ namespace TerminalOutput\Connection;
 
 abstract class Connection
 {
-    protected $continue = true;
+    protected $commands;
 
     // abstract public function listen();
 
     public function __construct()
     {
+        $this->commands = (object) array(
+            'continue' => true
+        );
+
         declare(ticks = 1);
 
         pcntl_signal(SIGTERM, array($this, 'stop'));
@@ -22,13 +26,8 @@ abstract class Connection
     public function stop()
     {
         $this->debug("Stopping");
-        $this->continue = false;
+        $this->commands->continue = false;
         $this->debug("Stopped");
-    }
-
-    protected function cont()
-    {
-        return $this->continue;
     }
 
     protected function display($i)
