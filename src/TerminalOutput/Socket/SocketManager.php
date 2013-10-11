@@ -2,7 +2,7 @@
 
 namespace TerminalOutput\Socket;
 
-class SocketBag
+class SocketManager
 {
     protected $masterSocket;
 

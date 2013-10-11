@@ -1,7 +1,7 @@
 <?php
 namespace TerminalOutput\Connection;
 
-use TerminalOutput\Socket\SocketFactory, TerminalOutput\Socket\SocketBag;
+use TerminalOutput\Socket\SocketFactory, TerminalOutput\Socket\SocketManager;
 
 class INETConnection extends Connection
 {
@@ -34,7 +34,7 @@ class INETConnection extends Connection
 
         $this->masterSocket = SocketFactory::create($socketOptions)->bind()->listen();
 
-        $this->clients = new SocketBag($this->masterSocket, $this->maxClients);
+        $this->clients = new SocketManager($this->masterSocket, $this->maxClients);
     }
 
     public function listen()
