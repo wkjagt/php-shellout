@@ -1,11 +1,13 @@
 <?php
-require 'Connection.php';
-require 'Socket.php';
-require 'MasterSocket.php';
-require 'ClientSocket.php';
-require 'SocketBag.php';
-require 'SocketException.php';
-require 'SocketFactory.php';
+namespace TerminalOutput\Connection;
+
+// require 'Connection.php';
+// require 'Socket.php';
+// require 'MasterSocket.php';
+// require 'ClientSocket.php';
+// require 'SocketBag.php';
+// require 'SocketException.php';
+// require 'SocketFactory.php';
 
 class INETConnection extends Connection
 {
@@ -115,6 +117,3 @@ class INETConnection extends Connection
 }
 
 
-
-$c = new INETConnection('127.0.0.1', 5000);
-$c->listen();

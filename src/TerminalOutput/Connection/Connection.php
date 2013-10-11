@@ -1,5 +1,6 @@
 <?php
 
+namespace TerminalOutput\Connection;
 
 abstract class Connection
 {
