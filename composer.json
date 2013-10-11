@@ -1,0 +1,12 @@
+{
+    "name": "terminal-output/terminal-output",
+    "description": "A tool to output debugging information to the terminal",
+    "type": "library",
+    "keywords": ["debugging","terminal"],
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {
+            "PHPTerminal": "src/"
+        }
+    }
+}
