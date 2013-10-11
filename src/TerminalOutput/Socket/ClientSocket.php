@@ -1,4 +1,5 @@
 <?php
+namespace TerminalOutput\Socket;
 
 class ClientSocket extends Socket
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace TerminalOutput\Socket;
+
 class SocketBag
 {
     protected $masterSocket;

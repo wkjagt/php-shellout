@@ -1,5 +1,7 @@
 <?php
 
+namespace TerminalOutput\Socket;
+
 class SocketFactory
 {
     public function create($arg)
