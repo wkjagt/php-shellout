@@ -30,6 +30,7 @@ class SocketManager
     public function start()
     {
         do {
+            $this->clients = array_values($this->clients);
             $this->read = array_merge(array($this->masterSocket), $this->clients);
 
             if($this->select() < 1) {
@@ -38,8 +39,6 @@ class SocketManager
             
             $this->accept()->read();
         } while ($this->commands->continue);
-
-        $this->masterSocket->close();
     }
 
     protected function select()
@@ -75,12 +74,17 @@ class SocketManager
 
     protected function read()
     {
-        foreach ($this->clients as $client) {
+        foreach ($this->clients as $key => $client) {
             if (in_array($client, $this->read)) {
-                $buf = $client->read();
+                try {
+                    $buf = $client->read();
 
-                if($response = $this->handler->onReceive($buf)) {
-                    $client->write($response);
+                    if($response = $this->handler->onReceive($buf)) {
+                        $client->write($response);
+                    }
+                } catch(\Exception $e) {
+                    unset($this->clients[$key]);
+                    $client->close();                    
                 }
             }            
         }        

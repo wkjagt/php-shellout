@@ -10,7 +10,7 @@ class ClientSocket extends Socket
  
     public function read()
     {
-        if (false === ($buf = socket_read($this->socket, 2048, PHP_NORMAL_READ))) {
+        if (false === ($buf = @socket_read($this->socket, 2048, PHP_NORMAL_READ))) {
             throw new SocketException();
         }
         return $buf;
