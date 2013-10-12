@@ -7,7 +7,10 @@
     "autoload": {
         "psr-0": {
             "TerminalOutput": "src/"
-        }
+        },
+        "files" : [
+            "src/TerminalOutput/Console.php"
+        ]
     },
     "require" : {
         "symfony/console": "v2.2.1"

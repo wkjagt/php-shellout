@@ -15,6 +15,7 @@ class Socket
         $talkback = trim($talkback) . "\n";
 
         @socket_write($this->socket, $talkback, strlen($talkback));
+        return $this;
     }
 
     public function close()
