@@ -6,6 +6,8 @@ abstract class Connection
 {
     protected $commands;
 
+    protected $handler;
+
     // abstract public function listen();
 
     public function __construct()
@@ -28,6 +30,11 @@ abstract class Connection
         $this->debug("Stopping");
         $this->commands->continue = false;
         $this->debug("Stopped");
+    }
+
+    public function setHandler($handler)
+    {
+        $this->handler = $handler;
     }
 
     protected function display($i)

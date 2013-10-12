@@ -10,7 +10,7 @@ $socketOptions = array(
     'type' => SOCK_STREAM,
     'protocol' => SOL_TCP,
     'address' => '127.0.0.1',
-    'port' => '5000',
+    'port' => '50000',
 );
 
 $socket = SocketFactory::create($socketOptions)->connect();

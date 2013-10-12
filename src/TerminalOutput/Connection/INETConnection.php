@@ -40,7 +40,7 @@ class INETConnection extends Connection
             $this->masterSocket,
             $this->maxClients,
             $this->commands,
-            new OutputHandler()
+            $this->handler
             );
     }
 

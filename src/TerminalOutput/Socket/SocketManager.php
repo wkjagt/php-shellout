@@ -48,7 +48,7 @@ class SocketManager
         foreach($this->read as $socket) {
             $read[] = $socket->getRawSocket();
         }
-        $selected = socket_select($read, $write = NULL, $except = NULL, $tv_sec = 5);
+        $selected = @socket_select($read, $write = NULL, $except = NULL, $tv_sec = 5);
 
         // remove from $this->read if not $read
         foreach($this->read as $k => $r) {

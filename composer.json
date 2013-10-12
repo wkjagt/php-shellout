@@ -8,5 +8,8 @@
         "psr-0": {
             "TerminalOutput": "src/"
         }
+    },
+    "require" : {
+        "symfony/console": "v2.2.1"
     }
 }
