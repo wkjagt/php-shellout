@@ -20,4 +20,5 @@ $test = var_export(array(1, 2, 3), true);
 
 
 $socket->write($test);
-sleep(1);
+$socket->close();
+// sleep(1);
