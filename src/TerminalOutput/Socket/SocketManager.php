@@ -2,6 +2,9 @@
 
 namespace TerminalOutput\Socket;
 
+use TerminalOutput\Handler\HandlerInterface;
+
+
 class SocketManager
 {
     protected $masterSocket;
@@ -14,11 +17,14 @@ class SocketManager
 
     protected $commands;
 
-    public function __construct(MasterSocket $masterSocket, $size, $commands)
+    protected $handler;
+
+    public function __construct(MasterSocket $masterSocket, $size, $commands, HandlerInterface $handler)
     {
         $this->masterSocket = $masterSocket;
         $this->size = $size;
         $this->commands = $commands;
+        $this->handler = $handler;
     }
 
     public function start()
@@ -32,6 +38,8 @@ class SocketManager
             
             $this->accept()->read();
         } while ($this->commands->continue);
+
+        $this->masterSocket->close();
     }
 
     protected function select()
@@ -55,7 +63,12 @@ class SocketManager
     protected function accept()
     {
         if (in_array($this->masterSocket, $this->read)) {
-            $this->clients[] = SocketFactory::create($this->masterSocket);
+            $newClient = SocketFactory::create($this->masterSocket);
+
+            if($welcome = $this->handler->onConnect()) {
+                $newClient->write($welcome);
+            }
+            $this->clients[] = $newClient;
         }
         return $this;
     }
@@ -65,7 +78,10 @@ class SocketManager
         foreach ($this->clients as $client) {
             if (in_array($client, $this->read)) {
                 $buf = $client->read();
-                echo $buf;
+
+                if($response = $this->handler->onReceive($buf)) {
+                    $client->write($response);
+                }
             }            
         }        
     }

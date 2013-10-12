@@ -16,4 +16,9 @@ class ClientSocket extends Socket
         return $buf;
     }
 
+    public function write($talkback)
+    {
+        $talkback = trim($talkback) . "\n";
+        socket_write($this->socket, $talkback, strlen($talkback));
+    }
 }

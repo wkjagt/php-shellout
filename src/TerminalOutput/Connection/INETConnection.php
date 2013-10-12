@@ -2,6 +2,7 @@
 namespace TerminalOutput\Connection;
 
 use TerminalOutput\Socket\SocketFactory, TerminalOutput\Socket\SocketManager;
+use TerminalOutput\Handler\OutputHandler;
 
 class INETConnection extends Connection
 {
@@ -34,7 +35,13 @@ class INETConnection extends Connection
 
         $this->masterSocket = SocketFactory::create($socketOptions)->bind()->listen();
 
-        $this->clients = new SocketManager($this->masterSocket, $this->maxClients, $this->commands);
+        # todo make this more dependency injection
+        $this->clients = new SocketManager(
+            $this->masterSocket,
+            $this->maxClients,
+            $this->commands,
+            new OutputHandler()
+            );
     }
 
     public function listen()
