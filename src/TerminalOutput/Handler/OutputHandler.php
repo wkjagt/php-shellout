@@ -11,6 +11,7 @@ class OutputHandler implements HandlerInterface
 
     public function onReceive($buffer)
     {
+        echo $buffer;
         if(trim($buffer)) {
             return "you said $buffer";            
         }

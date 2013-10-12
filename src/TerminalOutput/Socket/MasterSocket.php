@@ -25,6 +25,16 @@ class MasterSocket extends Socket
         return $this;
     }
 
+    public function connect()
+    {
+        if(!socket_connect(
+            $this->socket, $this->options['address'], $this->options['port'])) {
+            
+            throw new SocketException();
+        }
+        return $this;
+    }
+
     public function listen()
     {
         if(!socket_listen ($this->socket, $this->options['backlog'])) {
