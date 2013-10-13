@@ -4,7 +4,7 @@ namespace TerminalOutput\Socket;
 
 class SocketFactory
 {
-    public function create($arg)
+    public static function create($arg)
     {
         if(is_array($arg)) {
             return new MasterSocket($arg);
