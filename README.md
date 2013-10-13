@@ -25,3 +25,12 @@ This is a composer package, so installation is as easy as adding it following to
   }
 {
 ```
+
+##TODO
+
+The server allows setting an address and port, but the Console::log command's address and port are hard coded. I was thinking of a global setting for this. Something like:
+```php
+Console::setAddress('192.168.12.34');
+Console::setPort(1234);
+```
+Another option might be to have the server set environment variables for the address and port it uses, which the Console class then uses.
