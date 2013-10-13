@@ -17,6 +17,25 @@ class ServerCommand extends Command implements HandlerInterface
     protected $defaultPort = 50000;
     protected $output;
 
+    protected $openingScreen = '
+             __________  ___ _____________            
+             \______   \/   |   \______   \           
+              |     ___/    ~    \     ___/           
+              |    |   \    Y    /    |               
+              |____|    \___|_  /|____|               
+                              \/                      
+    _________                            .__          
+    \_   ___ \  ____   ____   __________ |  |   ____  
+    /    \  \/ /  _ \ /    \ /  ___/  _ \|  | _/ __ \ 
+    \     \___(  <_> )   |  \\___ (  <_> )  |_\  ___/ 
+     \______  /\____/|___|  /____  >____/|____/\___  >
+            \/            \/     \/                \/ 
+                 ________          __                 
+                 \_____  \  __ ___/  |_               
+                  /   |   \|  |  \   __\              
+                 /    |    \  |  /|  |                
+                 \_______  /____/ |__|';
+
     protected function configure()
     {
         $this
@@ -44,6 +63,9 @@ class ServerCommand extends Command implements HandlerInterface
         $address = $input->getOption('address') ?: $this->defaultAddress;
         $port = $input->getOption('port') ?: $this->defaultPort;
 
+        $output->write(sprintf("%s\n\n", $this->openingScreen));
+        $output->writeln(sprintf("<info>    Listening on %s:%d</info>\n\n", $address, $port));
+
         $c = new INETConnection($address, $port);
         $c->setHandler($this);
         $c->listen();
@@ -56,5 +78,11 @@ class ServerCommand extends Command implements HandlerInterface
     public function onReceive($buffer)
     {
         $this->output->write($buffer);
+    }
+
+    public function info($string)
+    {
+        $this->output->writeln('');
+        $this->output->writeln(sprintf('<info>%s</info>', $string));
     }
 }

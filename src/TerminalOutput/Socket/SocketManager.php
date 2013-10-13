@@ -39,6 +39,8 @@ class SocketManager
             
             $this->accept()->read();
         } while ($this->commands->continue);
+
+        $this->handler->info('Closing...');
     }
 
     protected function select()

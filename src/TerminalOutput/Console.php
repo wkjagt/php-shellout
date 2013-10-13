@@ -10,6 +10,16 @@ class Console
 
     static $port = 50000;
 
+    protected static function setAddress($address)
+    {
+        static::$address = $address;
+    }
+
+    protected static function setPort($port)
+    {
+        static::$port = $port;
+    }
+
     protected static function getSocket()
     {
         $socketOptions = array(

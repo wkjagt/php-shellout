@@ -27,9 +27,7 @@ abstract class Connection
 
     public function stop()
     {
-        $this->debug("Stopping");
         $this->commands->continue = false;
-        $this->debug("Stopped");
     }
 
     public function setHandler($handler)
