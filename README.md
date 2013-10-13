@@ -5,5 +5,23 @@ This tool is mainly something to scratch my own itch. Something I've found reall
 
 So something I really wanted, is to output debugging information to the terminal (like you would in python for example). And that is exactly what this tool does. It's as simple as:
 
-1. start the "server": `php vendor/bin/console_output.php terminal-output:listen`.
+1. start the "server" (which is nothig more than a listening socket that outputs what it receives). This is where your debug information will show.
+```
+php vendor/bin/console_output.php terminal-output:listen
+```
 
+2. In your code, output for example `$yourVar`
+```php
+Console::log($yourVar);
+```
+
+### Installation
+
+This is a composer package, so installation is as easy as adding it following to your `require-dev`:
+```json
+{
+  "require-dev" : {
+    "terminal-output/terminal-output": "@dev"
+  }
+{
+```
