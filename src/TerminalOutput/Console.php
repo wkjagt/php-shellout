@@ -12,10 +12,6 @@ class Console
 
     protected static function getSocket()
     {
-        if(static::$socket) {
-            return $socket;
-        }
-
         $socketOptions = array(
             'domain' => AF_INET,
             'type' => SOCK_STREAM,
@@ -29,6 +25,17 @@ class Console
 
     public static function log($value)
     {
+        // move to web plugin
+        if(@$_SERVER && $_SERVER['REQUEST_URI']) {
+            static::output(sprintf('<info>Request URI: %s</info>', $_SERVER['REQUEST_URI']));
+        }
+
+        static::output($value);
+    }
+
+    public static function output($value)
+    {
         static::getSocket()->write(print_r($value, true))->close();
     }
+
 }

@@ -51,9 +51,6 @@ class ServerCommand extends Command implements HandlerInterface
 
     public function onConnect()
     {
-        $this->output->writeln('');
-        $this->output->writeln('<info>Connected</info>');
-        $this->output->writeln('');
     }
 
     public function onReceive($buffer)
