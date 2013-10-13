@@ -1,7 +1,29 @@
 <?php
 
-include __DIR__.'/../vendor/autoload.php';
+$files = array(
+  __DIR__ . '/../vendor/autoload.php', // when in main projects
+  __DIR__ . '/../../../autoload.php', // when executed as dependency
+);
 
+$found = FALSE;
+
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        require $file;
+
+        $found = TRUE;
+
+        break;
+    }
+}
+
+if (!$found) {
+    die(
+      'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+      'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+      'php composer.phar install' . PHP_EOL
+    );
+}
 $console = new Symfony\Component\Console\Application();
 $console->add(new TerminalOutput\Command\ServerCommand);
 $console->run();
