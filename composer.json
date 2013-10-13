@@ -14,5 +14,6 @@
     },
     "require" : {
         "symfony/console": "v2.2.1"
-    }
+    },
+    "bin": ["bin/console_output.php"]
 }
