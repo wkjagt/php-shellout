@@ -23,5 +23,5 @@ This is a composer package, so installation is as easy as adding it following to
   "require-dev" : {
     "terminal-output/terminal-output": "@dev"
   }
-{
+}
 ```
