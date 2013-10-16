@@ -15,6 +15,8 @@ php vendor/bin/console_output.php terminal-output:listen
 Console::log($yourVar);
 ```
 
+When you reload your page, nothing is poluted with debug information, and your variable is pretty printed to the terminal that's running the server you started in step 1.
+
 ### Installation
 
 This is a composer package, so installation is as easy as adding it following to your `require-dev`:
