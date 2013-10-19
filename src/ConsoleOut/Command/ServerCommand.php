@@ -52,7 +52,7 @@ class ServerCommand extends Command implements HandlerInterface
     protected function configure()
     {
         $this
-            ->setName('terminal-output:listen')
+            ->setName('console-out:listen')
             ->setDescription('Start Terminal Output')
             ->addOption(
                 'address',

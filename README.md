@@ -7,7 +7,7 @@ So something I really wanted, is to output debugging information to the terminal
 
 1. start the "server" (which is nothig more than a listening socket that outputs what it receives). This is where your debug information will show.
 ```
-php vendor/bin/console_output.php terminal-output:listen
+php vendor/bin/console_output.php console-out:listen
 ```
 
 2. In your code, output for example `$yourVar`
