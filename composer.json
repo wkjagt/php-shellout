@@ -2,8 +2,7 @@
     "name": "terminal-output/terminal-output",
     "description": "A tool to output debugging information to the terminal",
     "type": "library",
-    "keywords": ["debugging","terminal"],
-    "license": "MIT",
+    "keywords": ["debugging","terminal","console","socket","print_r","vardump"],
     "autoload": {
         "psr-0": {
             "TerminalOutput": "src/"
@@ -15,5 +14,5 @@
     "require" : {
         "symfony/console": "v2.2.1"
     },
-    "bin": ["bin/console_output.php"]
+    "bin": ["bin/console_output"]
 }
