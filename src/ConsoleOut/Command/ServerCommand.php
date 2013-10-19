@@ -1,6 +1,6 @@
 <?php
 
-namespace TerminalOutput\Command;
+namespace ConsoleOut\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -8,13 +8,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 
-use TerminalOutput\Connection\INETConnection;
-use TerminalOutput\Handler\HandlerInterface;
+use ConsoleOut\Connection\INETConnection;
+use ConsoleOut\Handler\HandlerInterface;
 
 /**
  * The Symfony Console Command implementation to run Console Out
  * 
- * Also implements TerminalOutput\Handler\HandlerInterface to be used as the output
+ * Also implements ConsoleOut\Handler\HandlerInterface to be used as the output
  * handler for the server.
  */
 class ServerCommand extends Command implements HandlerInterface

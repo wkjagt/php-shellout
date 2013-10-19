@@ -1,8 +1,8 @@
 <?php
 
-namespace TerminalOutput\Connection;
+namespace ConsoleOut\Connection;
 
-use TerminalOutput\Handler\HandlerInterface;
+use ConsoleOut\Handler\HandlerInterface;
 use RuntimeException;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-use TerminalOutput\Socket\SocketFactory;
+use ConsoleOut\Socket\SocketFactory;
 
 /** 
  * Console object used to send debugging information to

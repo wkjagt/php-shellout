@@ -5,10 +5,10 @@
     "keywords": ["debugging","terminal","console","socket","print_r","vardump"],
     "autoload": {
         "psr-0": {
-            "TerminalOutput": "src/"
+            "ConsoleOut": "src/"
         },
         "files" : [
-            "src/TerminalOutput/Console.php"
+            "src/ConsoleOut/Console.php"
         ]
     },
     "require" : {

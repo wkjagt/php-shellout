@@ -1,6 +1,6 @@
 <?php
 
-namespace TerminalOutput\Socket;
+namespace ConsoleOut\Socket;
 
 /**
  *  Client socket implementation of Socket
