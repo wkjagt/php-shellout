@@ -1,5 +1,5 @@
 {
-    "name": "terminal-output/terminal-output",
+    "name": "console-out/console-out",
     "description": "A tool to output debugging information to the terminal",
     "type": "library",
     "keywords": ["debugging","terminal","console","socket","print_r","vardump"],
