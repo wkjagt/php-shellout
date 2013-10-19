@@ -4,7 +4,9 @@ namespace TerminalOutput\Socket;
 
 use TerminalOutput\Handler\HandlerInterface;
 
-
+/**
+ * SocketManager
+ */
 class SocketManager
 {
     protected $masterSocket;
@@ -19,6 +21,14 @@ class SocketManager
 
     protected $handler;
 
+    /** 
+     * Constructor
+     * 
+     * @param MasterSocket     $masterSocket The socket that's capabale of listening
+     * @param int              $size         The max number of connected cliients to accept
+     * @param stdClass         $commands     State passing mechanism
+     * @param HandlerInterface $handler      Output handler object
+     */
     public function __construct(MasterSocket $masterSocket, $size, $commands, HandlerInterface $handler)
     {
         $this->masterSocket = $masterSocket;
@@ -27,6 +37,11 @@ class SocketManager
         $this->handler = $handler;
     }
 
+    /** 
+     * Start listening
+     * 
+     * @return void
+     */
     public function start()
     {
         do {
@@ -43,6 +58,12 @@ class SocketManager
         $this->handler->info('Closing...');
     }
 
+    /**
+     * Select sockets that are ready to be read from.
+     * Side effect: $this->read is updated with selected sockets
+     * 
+     * @return int the number of sockets that can be read from
+     */
     protected function select()
     {
         $read = array();
@@ -61,6 +82,11 @@ class SocketManager
         return $selected;
     }
 
+    /**
+     * Accept a new client socket for reading
+     * 
+     * @return SocketManager the current object for chaining
+     */
     protected function accept()
     {
         if (in_array($this->masterSocket, $this->read)) {
@@ -74,6 +100,11 @@ class SocketManager
         return $this;
     }
 
+    /** 
+     * Read from the readable sockets and call the output handler
+     * 
+     * @return void
+     */
     protected function read()
     {
         foreach ($this->clients as $key => $client) {
@@ -92,6 +123,9 @@ class SocketManager
         }        
     }
 
+    /**
+     * Destructor
+     */
     public function __destruct()
     {
         $this->masterSocket->close();

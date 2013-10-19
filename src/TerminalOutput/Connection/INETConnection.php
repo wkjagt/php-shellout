@@ -4,6 +4,10 @@ namespace TerminalOutput\Connection;
 use TerminalOutput\Socket\SocketFactory, TerminalOutput\Socket\SocketManager;
 use TerminalOutput\Handler\OutputHandler;
 
+/**
+ * The inet implementation if the connection object. Configures a SocketManager
+ * and starts it up.
+ */
 class INETConnection extends Connection
 {
     protected $address;
@@ -13,7 +17,13 @@ class INETConnection extends Connection
     protected $maxClients = 10;
 
     protected $clients = array();
-     
+ 
+    /**
+     * Constructor
+     * 
+     * @param string $address The address to listen on
+     * @param int $port    The port to listen on
+     */
     public function __construct($address, $port)
     {
         parent::__construct();
@@ -22,6 +32,10 @@ class INETConnection extends Connection
         $this->port = $port;
     }
 
+    /**
+     * Setup the Socket manager to use inet sockets using the TCP protocol
+     * @return void
+     */
     protected function setup()
     {
         $socketOptions = array(
@@ -44,6 +58,10 @@ class INETConnection extends Connection
             );
     }
 
+    /**
+     * Start listening on the master socket
+     * @return void
+     */
     public function listen()
     {
         $this->setup();

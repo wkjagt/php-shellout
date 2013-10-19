@@ -2,19 +2,37 @@
 
 namespace TerminalOutput\Connection;
 
+use TerminalOutput\Handler\HandlerInterface;
+use RuntimeException;
+
+/**
+ * The base connection class. Takes care of starting and stopping the server
+ */
 abstract class Connection
 {
     protected $commands;
 
     protected $handler;
 
-    // abstract public function listen();
+    /**
+     * Start listening
+     * 
+     * @return void
+     */
+    abstract public function listen();
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->commands = (object) array(
             'continue' => true
         );
+
+        if(!function_exists('pcntl_signal')) {
+            throw new RuntimeException('PHP not installed with pcntl');
+        }
 
         declare(ticks = 1);
 
@@ -25,24 +43,23 @@ abstract class Connection
         pcntl_signal(SIGCHLD, SIG_IGN);
     }
 
+    /**
+     * Stop listening
+     * 
+     * @return void
+     */
     public function stop()
     {
         $this->commands->continue = false;
     }
 
-    public function setHandler($handler)
+    /**
+     * Setter for output handler
+     * 
+     * @param [type] $handler [description]
+     */
+    public function setHandler(HandlerInterface $handler)
     {
         $this->handler = $handler;
     }
-
-    protected function display($i)
-    {
-        echo "$i\n";
-    }
-
-    protected function debug($m)
-    {
-        echo "$m\n";
-    }
-
 }

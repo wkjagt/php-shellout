@@ -11,8 +11,15 @@ use Symfony\Component\Console\Command\Command;
 use TerminalOutput\Connection\INETConnection;
 use TerminalOutput\Handler\HandlerInterface;
 
+/**
+ * The Symfony Console Command implementation to run Console Out
+ * 
+ * Also implements TerminalOutput\Handler\HandlerInterface to be used as the output
+ * handler for the server.
+ */
 class ServerCommand extends Command implements HandlerInterface
 {
+
     protected $defaultAddress = '127.0.0.1';
     protected $defaultPort = 50000;
     protected $output;
@@ -36,6 +43,12 @@ class ServerCommand extends Command implements HandlerInterface
                  /    |    \  |  /|  |                
                  \_______  /____/ |__|';
 
+
+    /**
+     * Configure the Console Command
+     * 
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -56,6 +69,13 @@ class ServerCommand extends Command implements HandlerInterface
             ;
     }
 
+    /**
+     * Execute the Console Command
+     * 
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
@@ -71,15 +91,30 @@ class ServerCommand extends Command implements HandlerInterface
         $c->listen();
     }
 
-    public function onConnect()
-    {
-    }
+    /**
+     * Called when a socket is connected
+     * 
+     * @return void
+     */
+    public function onConnect() {}
 
+    /**
+     * Called when new content is received over the socker
+     * 
+     * @param  string $buffer The content that's received over de socket
+     * @return void
+     */
     public function onReceive($buffer)
     {
         $this->output->write($buffer);
     }
 
+    /**
+     * Called when additional information needs to be displayed
+     * 
+     * @param  string $string Additional information
+     * @return void
+     */
     public function info($string)
     {
         $this->output->writeln('');

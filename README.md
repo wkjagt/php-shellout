@@ -12,7 +12,7 @@ php vendor/bin/console_output.php terminal-output:listen
 
 2. In your code, output for example `$yourVar`
 ```php
-Console::log($yourVar);
+Console::out($yourVar);
 ```
 
 When you reload your page, nothing is poluted with debug information, and your variable is pretty printed to the terminal that's running the server you started in step 1.
