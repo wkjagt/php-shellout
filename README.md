@@ -11,7 +11,7 @@ To:
 
 
 
-Something I've found really annoying for a long time when debugging PHP code, is that `print_r` outputs to standard out, which, in the case of web development, is most often something you see in your browser. If you have a simple web site, this works fine. But if you're using a lot of ajax requests, that, for example, return json, using `print_r` becomes really annoying, because you need to dig around your browser's dev console to inspect the response, your frontend code will break because your `print_r` or `var_dump` will make your json invalid, and sometimes your printed information is not invisible at all because of very mysterious reasons.
+Something I've found really annoying for a long time when debugging PHP code, is that `print_r` outputs to standard out, which, in the case of web development, is most often something you see in your browser. If you have a simple web site, this works fine. But if you're using a lot of ajax requests, that, for example, return json, using `print_r` becomes really annoying, because you need to dig around your browser's dev console to inspect the response, your frontend code will break because your `print_r` or `var_dump` will make your json invalid, and sometimes your printed information is not visible at all because of very mysterious reasons.
 
 So something I really wanted, is to output debugging information to the terminal (not your browser terminal, but your Mac or Linux terminal). And that is exactly what this tool does. It's as simple as:
 
