@@ -19,7 +19,7 @@ vendor/bin/console_output console-out:listen
 
 2. In your code, output for example `$_SERVER`
 ```php
-Console::out($yourVar);
+Console::out($_SERVER);
 ```
 
 3. And you'll get this in your terminal:
