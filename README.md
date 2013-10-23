@@ -11,13 +11,13 @@ To:
 
 
 
-This tool is mainly something to scratch my own itch. Something I've found really annoying for a long time when debugging my code, is that `print_r` outputs to standard out, which, in the case of web development, is most often something you see in your browser. If you have a simple web site, this works fine. But if you're using a lot of ajax requests, that, for example, return json, using print_r becomes really annoying, because you need to dig around your browser's dev console to inspect the response, your frontend will break because your js doesn't know what to do with the extra information, and sometimes your printed information is not invisible at all.
+This tool is mainly to scratch my own itch. Something I've found really annoying for a long time when debugging PHP code, is that `print_r` outputs to standard out, which, in the case of web development, is most often something you see in your browser. If you have a simple web site, this works fine. But if you're using a lot of ajax requests, that, for example, return json, using `print_r` becomes really annoying, because you need to dig around your browser's dev console to inspect the response, your frontend code will break because your `print_r` or `var_dump` will make your json invalid, and sometimes your printed information is not invisible at all because of very mysterious reasons.
 
-So something I really wanted, is to output debugging information to the terminal (like you would in python for example). And that is exactly what this tool does. It's as simple as:
+So something I really wanted, is to output debugging information to the terminal (not your browser terminal, but your Mac or Linux terminal). And that is exactly what this tool does. It's as simple as:
 
 1. start the "server" (which is nothig more than a listening socket that outputs what it receives). This is where your debug information will show.
 ```
-php vendor/bin/console_output.php console-out:listen
+vendor/bin/console_output console-out:listen
 ```
 
 2. In your code, output for example `$yourVar`
@@ -33,7 +33,7 @@ This is a composer package, so installation is as easy as adding it following to
 ```json
 {
   "require-dev" : {
-    "terminal-output/terminal-output": "@dev"
+    "console-out/console-out": "@dev"
   }
 }
 ```
