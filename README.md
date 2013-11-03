@@ -14,7 +14,7 @@ It's as simple as:
 
 1. start the "server" (which is nothig more than a listening socket that outputs what it receives). This is where your debug information will show.
 ```
-vendor/bin/console_output shellout:listen
+vendor/bin/shellout shellout:listen
 ```
 
 2. In your code, output for example `$_SERVER`
@@ -29,7 +29,7 @@ Shell::out($_SERVER);
 
 ### Installation
 
-This is a composer package, so installation is as easy as adding it following to your `require-dev`:
+This is a composer package, so installation is as easy as adding the following to your `require-dev`:
 ```json
 {
   "require-dev" : {
