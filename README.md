@@ -19,12 +19,12 @@ vendor/bin/console_output shellout:listen
 
 2. In your code, output for example `$_SERVER`
 ```php
-Console::out($_SERVER);
+Shell::out($_SERVER);
 ```
 
 3. And you'll get this in your terminal:
 4. 
-![image](https://f.cloud.github.com/assets/327048/1389762/caa82fbc-3bdf-11e3-95dc-10d63a3fe440.png)
+![image](https://f.cloud.github.com/assets/327048/1461017/c621cae0-4489-11e3-9904-e8a6777a77fe.png)
 
 
 ### Installation
