@@ -1,11 +1,11 @@
 <?php
 
-use ConsoleOut\Socket\SocketFactory;
+use ShellOut\Socket\SocketFactory;
 
 /** 
- * Console object used to send debugging information to
+ * Shell object used to send debugging information to
  */
-class Console
+class Shell
 {
     static $socket;
 

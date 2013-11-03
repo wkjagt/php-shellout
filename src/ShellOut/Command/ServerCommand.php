@@ -1,6 +1,6 @@
 <?php
 
-namespace ConsoleOut\Command;
+namespace ShellOut\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -8,13 +8,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 
-use ConsoleOut\Connection\INETConnection;
-use ConsoleOut\Handler\HandlerInterface;
+use ShellOut\Connection\INETConnection;
+use ShellOut\Handler\HandlerInterface;
 
 /**
  * The Symfony Console Command implementation to run Console Out
  * 
- * Also implements ConsoleOut\Handler\HandlerInterface to be used as the output
+ * Also implements ShellOut\Handler\HandlerInterface to be used as the output
  * handler for the server.
  */
 class ServerCommand extends Command implements HandlerInterface
@@ -24,24 +24,14 @@ class ServerCommand extends Command implements HandlerInterface
     protected $defaultPort = 50000;
     protected $output;
 
+    // http://patorjk.com/software/taag/#p=display&f=Graffiti&t=ShellOut
     protected $openingScreen = '
-             __________  ___ _____________            
-             \______   \/   |   \______   \           
-              |     ___/    ~    \     ___/           
-              |    |   \    Y    /    |               
-              |____|    \___|_  /|____|               
-                              \/                      
-    _________                            .__          
-    \_   ___ \  ____   ____   __________ |  |   ____  
-    /    \  \/ /  _ \ /    \ /  ___/  _ \|  | _/ __ \ 
-    \     \___(  <_> )   |  \\___ (  <_> )  |_\  ___/ 
-     \______  /\____/|___|  /____  >____/|____/\___  >
-            \/            \/     \/                \/ 
-                 ________          __                 
-                 \_____  \  __ ___/  |_               
-                  /   |   \|  |  \   __\              
-                 /    |    \  |  /|  |                
-                 \_______  /____/ |__|';
+      _________.__           .__  .__   ________          __   
+     /   _____/|  |__   ____ |  | |  |  \_____  \  __ ___/  |_ 
+     \_____  \ |  |  \_/ __ \|  | |  |   /   |   \|  |  \   __\
+     /        \|   Y  \  ___/|  |_|  |__/    |    \  |  /|  |  
+    /_______  /|___|  /\___  >____/____/\_______  /____/ |__|  
+            \/      \/     \/                   \/             ';
 
 
     /**
@@ -52,7 +42,7 @@ class ServerCommand extends Command implements HandlerInterface
     protected function configure()
     {
         $this
-            ->setName('console-out:listen')
+            ->setName('shellout:listen')
             ->setDescription('Start Terminal Output')
             ->addOption(
                 'address',

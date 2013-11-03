@@ -1,5 +1,5 @@
 <?php
-namespace ConsoleOut\Socket;
+namespace ShellOut\Socket;
 
 /**
  *  Master socket implementation of Socket. This is the socket that listens

@@ -1,8 +1,8 @@
 <?php
 
-namespace ConsoleOut\Socket;
+namespace ShellOut\Socket;
 
-use ConsoleOut\Handler\HandlerInterface;
+use ShellOut\Handler\HandlerInterface;
 
 /**
  * SocketManager

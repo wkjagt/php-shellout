@@ -1,6 +1,6 @@
 <?php
 
-namespace ConsoleOut\Handler;
+namespace ShellOut\Handler;
 
 /**
  *  Interface for output handlers. An output handler is a handler object that's used

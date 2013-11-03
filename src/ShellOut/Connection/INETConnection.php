@@ -1,8 +1,8 @@
 <?php
-namespace ConsoleOut\Connection;
+namespace ShellOut\Connection;
 
-use ConsoleOut\Socket\SocketFactory, ConsoleOut\Socket\SocketManager;
-use ConsoleOut\Handler\OutputHandler;
+use ShellOut\Socket\SocketFactory, ShellOut\Socket\SocketManager;
+use ShellOut\Handler\OutputHandler;
 
 /**
  * The inet implementation if the connection object. Configures a SocketManager

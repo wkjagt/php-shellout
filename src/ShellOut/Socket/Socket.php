@@ -1,5 +1,5 @@
 <?php
-namespace ConsoleOut\Socket;
+namespace ShellOut\Socket;
 
 /** 
  * Base Socket class for MasterSocket and ClientSocket
