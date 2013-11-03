@@ -1,4 +1,4 @@
-Console Output
+ShellOut
 ==============
 
 ### print_r and ajax : nope
@@ -14,7 +14,7 @@ It's as simple as:
 
 1. start the "server" (which is nothig more than a listening socket that outputs what it receives). This is where your debug information will show.
 ```
-vendor/bin/console_output console-out:listen
+vendor/bin/console_output shellout:listen
 ```
 
 2. In your code, output for example `$_SERVER`
@@ -33,7 +33,7 @@ This is a composer package, so installation is as easy as adding it following to
 ```json
 {
   "require-dev" : {
-    "console-out/console-out": "@dev"
+    "shellout/shellout": "@dev"
   }
 }
 ```

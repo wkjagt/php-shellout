@@ -1,18 +1,18 @@
 {
-    "name": "console-out/console-out",
-    "description": "A tool to output debugging information to the terminal",
+    "name": "shellout/shellout",
+    "description": "A tool to output debugging information to shell",
     "type": "library",
-    "keywords": ["debugging","terminal","console","socket","print_r","vardump"],
+    "keywords": ["debugging", "shell", "terminal","console","socket","print_r","vardump"],
     "autoload": {
         "psr-0": {
-            "ConsoleOut": "src/"
+            "ShellOut": "src/"
         },
         "files" : [
-            "src/ConsoleOut/Console.php"
+            "src/ShellOut/Shell.php"
         ]
     },
     "require" : {
         "symfony/console": "v2.2.1"
     },
-    "bin": ["bin/console_output"]
+    "bin": ["bin/shellout"]
 }
